@@ -17,23 +17,28 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Result> _results = [];
 
   Future<void> _search(String expression) async {
-    var newResult = await _api.search(expression);
+    List<Result> newResult = await _api.search(expression);
     setState(() {
-      _results = newResult;
+      _results = newResult.take(20).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchAppBar(onSearch: (expression) => _search(expression)),
-      body: Center(
-          child: ListView.builder(
-        itemBuilder: (context, index) => ListTile(
-          title: Text(_results[index].title),
-        ),
-        itemCount: _results.length,
-      )),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+              title: Text(_results[index].title),
+            ),
+            itemCount: _results.length,
+            shrinkWrap: true,
+          ),
+          SearchAppBar(onSearch: (expression) => _search(expression))
+        ],
+      ),
     );
   }
 }
