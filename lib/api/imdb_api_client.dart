@@ -10,18 +10,27 @@ class ImdbApiClient implements ApiClient {
 
   @override
   Future<List<Result>> search(String title) async {
-    Response<Map> response = await dio
-        .get('http://www.omdbapi.com/?i=tt3896198&apikey=186be766&s=$title');
+    title = "*$title*";
+    try {
+      Response<Map> response = await dio
+          .get('http://www.omdbapi.com/?i=tt3896198&apikey=186be766&s=$title');
 
-    return _parseResults(response.data as Map);
+      return _parseResults(response.data as Map);
+    } on Exception catch (e) {
+      return [];
+    }
   }
 
   List<Result> _parseResults(Map responseMap) {
     {
       final results = responseMap['Search'];
+      if (results == null) return [];
 
       return results
-          .map<Result>((json) => Result(json['Title'], json['imdbID']))
+          .map<Result>((json) => Result(
+                title: "${json['Title']} (${json['Year']})",
+                id: json['imdbID'],
+              ))
           .toList();
     }
   }
