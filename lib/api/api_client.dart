@@ -1,4 +1,5 @@
-abstract class ApiClient {
+import '../model/result.dart';
 
-  Future<void> search(String title);
+abstract class ApiClient {
+  Future<List<Result>> search(String title);
 }
