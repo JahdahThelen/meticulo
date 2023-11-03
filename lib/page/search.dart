@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:meticulo/api/api_client.dart';
+import 'package:meticulo/api/imdb_api_client.dart';
 import 'package:meticulo/widget/search_app_bar.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+import '../model/result.dart';
 
-  final String title;
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final ApiClient _api = ImdbApiClient();
+  List<Result> _results = [];
 
-  void _incrementCounter() {
+  Future<void> _search(String expression) async {
+    var newResult = await _api.search(expression);
     setState(() {
-      _counter++;
+      _results = newResult;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchAppBar(onSearch: (_) => _incrementCounter()),
+      appBar: SearchAppBar(onSearch: (expression) => _search(expression)),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+          child: ListView.builder(
+        itemBuilder: (context, index) => ListTile(
+          title: Text(_results[index].title),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        itemCount: _results.length,
+      )),
     );
   }
 }

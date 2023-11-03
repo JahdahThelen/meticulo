@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 
 import '../model/result.dart';
@@ -12,18 +10,17 @@ class ImdbApiClient implements ApiClient {
 
   @override
   Future<List<Result>> search(String title) async {
-    Response response = await dio
+    Response<Map> response = await dio
         .get('http://www.omdbapi.com/?i=tt3896198&apikey=186be766&s=$title');
 
-    return _parseResults(response.data);
+    return _parseResults(response.data as Map);
   }
 
-  List<Result> _parseResults(String responseBody) {
+  List<Result> _parseResults(Map responseMap) {
     {
-      final parsed =
-          (jsonDecode(responseBody) as List).cast<Map<String, dynamic>>();
+      final results = responseMap['Search'];
 
-      return parsed
+      return results
           .map<Result>((json) => Result(json['Title'], json['imdbID']))
           .toList();
     }
