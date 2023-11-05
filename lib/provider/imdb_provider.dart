@@ -9,11 +9,14 @@ class ImdbProvider extends ResultProvider {
   final ApiClient _api = ImdbApiClient();
   List<Result> _searchResults = [];
   final List<Result> _savedResults = [];
+  final Map<Result, int> _ratedResults = {};
 
   @override
   List<ListItem> get results => _searchResults
-      .map((result) =>
-          ListItem(result: result, isSaved: _savedResults.contains(result)))
+      .map((result) => ListItem(
+          result: result,
+          isSaved: _savedResults.contains(result),
+          rating: _ratedResults[result] ?? 0))
       .toList(growable: false);
 
   @override
@@ -33,4 +36,11 @@ class ImdbProvider extends ResultProvider {
     }
     notifyListeners();
   }
+
+  @override
+  void rate(ListItem item, int newRating) => _ratedResults.update(
+        item.result,
+        (rating) => rating = newRating,
+        ifAbsent: () => newRating,
+      );
 }

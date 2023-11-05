@@ -8,4 +8,6 @@ abstract class ResultProvider extends ChangeNotifier {
   Future<void> search(String expression);
 
   void save(ListItem item);
+
+  void rate(ListItem item, int newRating);
 }

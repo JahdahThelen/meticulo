@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meticulo/provider/result_provider.dart';
+import 'package:meticulo/widget/dialogs.dart';
 import 'package:meticulo/widget/results_list_view.dart';
 import 'package:meticulo/widget/search_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,8 @@ class SearchPage extends StatelessWidget {
             child: Consumer<ResultProvider>(builder: (context, provider, _) {
               return ResultsListView(
                   results: provider.results,
-                  onSave: (item) => onSave(context, item));
+                  onSave: (item) => onSave(context, item),
+                  onRate: (item) => onRate(context, item));
             }),
           ),
           SearchAppBar(onSearch: (expression) => onSearch(context, expression))
@@ -32,5 +34,15 @@ class SearchPage extends StatelessWidget {
 
   void onSearch(BuildContext context, String expression) {
     Provider.of<ResultProvider>(context, listen: false).search(expression);
+  }
+
+  void onRate(BuildContext context, ListItem item) {
+    RatingDialog(context).showRating(
+        title: item.result.title,
+        rating: item.rating,
+        onConfirmation: (newRating) {
+          Provider.of<ResultProvider>(context, listen: false)
+              .rate(item, newRating);
+        });
   }
 }
