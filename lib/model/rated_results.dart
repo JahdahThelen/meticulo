@@ -27,4 +27,6 @@ class RatedResults {
   int update(Result key, int Function(int) update, {int Function()? ifAbsent}) {
     return ratedResults.update(key, update, ifAbsent: ifAbsent);
   }
+
+  Iterable<MapEntry<Result, int>> get entries => ratedResults.entries;
 }

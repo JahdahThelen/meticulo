@@ -3,18 +3,20 @@ import 'package:meticulo/provider/result_provider.dart';
 import 'package:meticulo/storage/abstract_storage.dart';
 
 import '../api/api_client.dart';
-import '../api/imdb_api_client.dart';
 import '../model/result.dart';
 import '../widget/results_list_view.dart';
 
+enum ResultsType { searched, saved, rated }
+
 class ImdbProvider extends ResultProvider {
+  ResultsType _resultsType = ResultsType.saved;
   final AbstractStorage? _storage;
-  final ApiClient _api = ImdbApiClient();
+  final ApiClient _api;
   List<Result> _searchResults = [];
   List<Result> _savedResults = [];
   RatedResults _ratedResults = RatedResults.empty();
 
-  ImdbProvider(this._storage) {
+  ImdbProvider(this._storage, this._api) {
     loadData();
   }
 
@@ -22,18 +24,48 @@ class ImdbProvider extends ResultProvider {
     if (_storage == null) return;
     _savedResults = await _storage!.readSavedResults();
     _ratedResults = await _storage!.readRatedResults();
+    notifyListeners();
   }
 
   @override
-  List<ListItem> get results => _searchResults
+  List<ListItem> get results {
+    switch (_resultsType) {
+      case ResultsType.searched:
+        return searchResults;
+      case ResultsType.saved:
+        return savedResults;
+      case ResultsType.rated:
+        return ratedResults;
+    }
+  }
+
+  List<ListItem> get searchResults => _searchResults
       .map((result) => ListItem(
           result: result,
           isSaved: _savedResults.contains(result),
           rating: _ratedResults[result] ?? 0))
       .toList(growable: false);
 
+  List<ListItem> get savedResults => _savedResults
+      .map((result) => ListItem(
+          result: result, isSaved: true, rating: _ratedResults[result] ?? 0))
+      .toList(growable: false);
+
+  List<ListItem> get ratedResults => _ratedResults.entries
+      .map((entry) => ListItem(
+          result: entry.key,
+          isSaved: _savedResults.contains(entry.key),
+          rating: entry.value))
+      .toList(growable: false);
+
   @override
   Future<void> search(String expression) async {
+    if (expression.isEmpty) {
+      _resultsType = ResultsType.saved;
+      notifyListeners();
+      return;
+    }
+    _resultsType = ResultsType.searched;
     List<Result> newResult = await _api.search(expression);
     _searchResults = newResult;
     notifyListeners();

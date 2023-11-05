@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meticulo/api/imdb_api_client.dart';
 import 'package:meticulo/page/search.dart';
 import 'package:meticulo/provider/imdb_provider.dart';
 import 'package:meticulo/provider/result_provider.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
                 return const SizedBox.shrink();
               case ConnectionState.done:
                 return ChangeNotifierProvider<ResultProvider>(
-                    create: (_) => ImdbProvider(snapshot.data),
+                    create: (_) => ImdbProvider(snapshot.data, ImdbApiClient()),
                     builder: (context, _) {
                       return const SearchPage();
                     });
