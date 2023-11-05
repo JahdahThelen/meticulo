@@ -8,7 +8,7 @@ abstract class CustomDialog {
 }
 
 class RatingDialog extends CustomDialog {
-  RatingDialog(BuildContext context) : super(context);
+  RatingDialog(super.context);
 
   Future<void> _showDialog(
       {required String title,
@@ -61,4 +61,43 @@ class RatingDialog extends CustomDialog {
           rating: rating,
           onConfirmation: onConfirmation,
           onCancellation: onCancellation);
+}
+
+class FilterDialog extends CustomDialog {
+  FilterDialog(super.context);
+
+  Future<void> _showDialog(
+      {required void Function() onConfirmation, VoidCallback? onCancellation}) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            content: const SingleChildScrollView(child: Placeholder()),
+            actionsAlignment: MainAxisAlignment.spaceAround,
+            actions: [
+              CustomIconButton.cancel(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  onCancellation == null ? () => null : onCancellation();
+                },
+              ),
+              CustomIconButton.confirm(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  onConfirmation();
+                },
+              )
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> showFilter(
+          {required void Function() onConfirmation,
+          VoidCallback? onCancellation}) =>
+      _showDialog(
+          onConfirmation: onConfirmation, onCancellation: onCancellation);
 }

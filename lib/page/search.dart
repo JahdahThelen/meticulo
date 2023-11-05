@@ -22,7 +22,9 @@ class SearchPage extends StatelessWidget {
                   onRate: (item) => onRate(context, item));
             }),
           ),
-          SearchAppBar(onSearch: (expression) => onSearch(context, expression))
+          SearchAppBar(
+              onSearch: (expression) => onSearch(context, expression),
+              onFilter: () => onFilter(context))
         ],
       ),
     );
@@ -44,5 +46,9 @@ class SearchPage extends StatelessWidget {
           Provider.of<ResultProvider>(context, listen: false)
               .rate(item, newRating);
         });
+  }
+
+  void onFilter(BuildContext context) {
+    FilterDialog(context).showFilter(onConfirmation: () => print("FILTER ME"));
   }
 }

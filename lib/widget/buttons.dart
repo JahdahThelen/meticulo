@@ -27,4 +27,7 @@ class CustomIconButton extends StatelessWidget {
       : icon = Icon(
           selected ? Icons.star : Icons.star_border,
         );
+
+  const CustomIconButton.filter({super.key, this.onPressed})
+      : icon = const Icon(Icons.filter_list);
 }

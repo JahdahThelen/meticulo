@@ -51,6 +51,7 @@ class LocalFileStorage extends AbstractStorage {
 
     String contents = await file.readAsString();
     final List<Result> results = [];
+    if (contents.isEmpty) return results;
     final items = jsonDecode(contents) as List<dynamic>;
     for (var item in items) {
       results.add(Result.fromJson(item));
@@ -62,6 +63,7 @@ class LocalFileStorage extends AbstractStorage {
   Future<RatedResults> readRatedResults() async {
     final file = await _ratedResultsFile;
     String contents = await file.readAsString();
+    if (contents.isEmpty) return RatedResults.empty();
     var items = jsonDecode(contents) as List<dynamic>;
     return RatedResults.fromJson(items);
   }
