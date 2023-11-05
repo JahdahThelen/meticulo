@@ -22,16 +22,14 @@ class ImdbApiClient implements ApiClient {
   }
 
   List<Result> _parseResults(Map responseMap) {
-    {
-      final results = responseMap['Search'];
-      if (results == null) return [];
+    final results = responseMap['Search'];
+    if (results == null) return [];
 
-      return results
-          .map<Result>((json) => Result(
-                title: "${json['Title']} (${json['Year']})",
-                id: json['imdbID'],
-              ))
-          .toList();
-    }
+    return results
+        .map<Result>((json) => Result(
+              title: "${json['Title']} (${json['Year']})",
+              id: json['imdbID'],
+            ))
+        .toList();
   }
 }

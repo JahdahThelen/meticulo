@@ -14,4 +14,13 @@ class Result extends Object {
 
   @override
   String toString() => '{ id: $id, title: $title }';
+
+  Result.fromJson(Map<String, dynamic> json)
+      : title = json['title'] as String,
+        id = json['id'] as String;
+
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'id': id,
+      };
 }
