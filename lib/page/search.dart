@@ -23,8 +23,9 @@ class SearchPage extends StatelessWidget {
             }),
           ),
           SearchAppBar(
-              onSearch: (expression) => onSearch(context, expression),
-              onFilter: () => onFilter(context))
+            onSearch: (expression) => onSearch(context, expression),
+            //onFilter: () => onFilter(context),
+          )
         ],
       ),
     );
@@ -48,7 +49,7 @@ class SearchPage extends StatelessWidget {
         });
   }
 
-  void onFilter(BuildContext context) {
+/*  void onFilter(BuildContext context) {
     FilterDialog(context).showFilter(onConfirmation: () => print("FILTER ME"));
-  }
+  }*/
 }

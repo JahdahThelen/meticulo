@@ -27,12 +27,13 @@ class SearchAppBar extends StatelessWidget {
                 },
                 suggestionsBuilder: (_, __) => []),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: CustomIconButton.filter(
-              onPressed: onFilter,
+          if (onFilter != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: CustomIconButton.filter(
+                onPressed: onFilter,
+              ),
             ),
-          ),
         ],
       ),
     );
