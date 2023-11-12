@@ -15,7 +15,13 @@ class ResultsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (results.isEmpty) {
+      return const Center(
+          child: Text("Nothing to show.", style: TextStyle(fontSize: 20)));
+    }
+
     return ListView.separated(
+      reverse: true,
       itemBuilder: (context, index) {
         ListItem item = results[index];
         return ListTile(

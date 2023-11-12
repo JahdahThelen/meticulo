@@ -18,6 +18,7 @@ class SearchAppBar extends StatelessWidget {
                 builder: (BuildContext context, SearchController controller) {
                   return SearchBar(
                     controller: controller,
+                    hintText: "Search for a movie...",
                     onSubmitted: onSearch,
                     leading: const Padding(
                       padding: EdgeInsets.all(5),
