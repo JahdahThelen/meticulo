@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:meticulo/provider/result_provider.dart';
-import 'package:meticulo/widget/dialogs.dart';
-import 'package:meticulo/widget/results_list_view.dart';
-import 'package:meticulo/widget/search_app_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/result_provider.dart';
+import '../layout/results_list_view.dart';
+import '../widget/dialogs.dart';
 import '../widget/no_results.dart';
+import '../widget/simple_search_bar.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -25,7 +25,7 @@ class SearchPage extends StatelessWidget {
                   onRate: (item) => onRate(context, item));
             }),
           ),
-          SearchAppBar(
+          SimpleSearchBar(
             onSearch: (expression) => onSearch(context, expression),
             //onFilter: () => onFilter(context),
           )

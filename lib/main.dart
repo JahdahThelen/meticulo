@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meticulo/api/imdb_api_client.dart';
-import 'package:meticulo/page/search.dart';
 import 'package:meticulo/provider/imdb_provider.dart';
 import 'package:meticulo/provider/result_provider.dart';
 import 'package:meticulo/storage/abstract_storage.dart';
 import 'package:meticulo/storage/local_file_storage.dart';
+import 'package:meticulo/ui/page/search.dart';
 import 'package:provider/provider.dart';
 
 void main() {

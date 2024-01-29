@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../model/result.dart';
-import 'icons.dart';
+import '../../model/result.dart';
+import '../widget/icons.dart';
 import 'rating_rows.dart';
 
 class ResultsListView extends StatelessWidget {

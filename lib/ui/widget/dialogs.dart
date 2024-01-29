@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meticulo/widget/buttons.dart';
-import 'package:meticulo/widget/rating_rows.dart';
+
+import '../layout/rating_rows.dart';
+import 'buttons.dart';
 
 abstract class CustomDialog {
   final BuildContext context;

@@ -4,7 +4,7 @@ import 'package:meticulo/storage/abstract_storage.dart';
 
 import '../api/api_client.dart';
 import '../model/result.dart';
-import '../widget/results_list_view.dart';
+import '../ui/layout/results_list_view.dart';
 
 enum ResultsType { searched, saved, rated }
 

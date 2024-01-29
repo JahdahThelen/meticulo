@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'icons.dart';
 
-class SearchAppBar extends StatelessWidget {
+class SimpleSearchBar extends StatelessWidget {
   final String hintText = "Search for a movie...";
 
   final void Function(String)? onSearch;
 
-  const SearchAppBar({super.key, this.onSearch});
+  const SimpleSearchBar({super.key, this.onSearch});
 
   @override
   Widget build(BuildContext context) {

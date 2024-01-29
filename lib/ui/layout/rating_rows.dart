@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'buttons.dart';
-import 'icons.dart';
+import '../widget/buttons.dart';
+import '../widget/icons.dart';
 
 class RatingIconRow extends StatelessWidget {
   final int rating;
