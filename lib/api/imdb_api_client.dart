@@ -16,7 +16,7 @@ class ImdbApiClient implements ApiClient {
           .get('http://www.omdbapi.com/?i=tt3896198&apikey=186be766&s=$title');
 
       return _parseResults(response.data as Map);
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       return [];
     }
   }

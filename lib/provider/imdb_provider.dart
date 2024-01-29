@@ -28,7 +28,7 @@ class ImdbProvider extends ResultProvider {
   }
 
   @override
-  List<ListItem> get results {
+  List<ResultListDTO> get results {
     switch (_resultsType) {
       case ResultsType.searched:
         return searchResults;
@@ -39,20 +39,20 @@ class ImdbProvider extends ResultProvider {
     }
   }
 
-  List<ListItem> get searchResults => _searchResults
-      .map((result) => ListItem(
+  List<ResultListDTO> get searchResults => _searchResults
+      .map((result) => ResultListDTO(
           result: result,
           isSaved: _savedResults.contains(result),
           rating: _ratedResults[result] ?? 0))
       .toList(growable: false);
 
-  List<ListItem> get savedResults => _savedResults
-      .map((result) => ListItem(
+  List<ResultListDTO> get savedResults => _savedResults
+      .map((result) => ResultListDTO(
           result: result, isSaved: true, rating: _ratedResults[result] ?? 0))
       .toList(growable: false);
 
-  List<ListItem> get ratedResults => _ratedResults.entries
-      .map((entry) => ListItem(
+  List<ResultListDTO> get ratedResults => _ratedResults.entries
+      .map((entry) => ResultListDTO(
           result: entry.key,
           isSaved: _savedResults.contains(entry.key),
           rating: entry.value))
@@ -72,7 +72,7 @@ class ImdbProvider extends ResultProvider {
   }
 
   @override
-  void save(ListItem item) {
+  void save(ResultListDTO item) {
     Result result = item.result;
     if (_savedResults.contains(result)) {
       _savedResults.remove(result);
@@ -89,7 +89,7 @@ class ImdbProvider extends ResultProvider {
   }
 
   @override
-  void rate(ListItem item, int newRating) {
+  void rate(ResultListDTO item, int newRating) {
     _ratedResults.update(
       item.result,
       (rating) => rating = newRating,

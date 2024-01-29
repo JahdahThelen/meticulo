@@ -5,6 +5,8 @@ import 'package:meticulo/widget/results_list_view.dart';
 import 'package:meticulo/widget/search_app_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../widget/no_results.dart';
+
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
 
@@ -16,6 +18,7 @@ class SearchPage extends StatelessWidget {
         children: [
           Flexible(
             child: Consumer<ResultProvider>(builder: (context, provider, _) {
+              if (provider.results.isEmpty) return const NoResults();
               return ResultsListView(
                   results: provider.results,
                   onSave: (item) => onSave(context, item),
@@ -31,7 +34,7 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  void onSave(BuildContext context, ListItem item) {
+  void onSave(BuildContext context, ResultListDTO item) {
     Provider.of<ResultProvider>(context, listen: false).save(item);
   }
 
@@ -39,7 +42,7 @@ class SearchPage extends StatelessWidget {
     Provider.of<ResultProvider>(context, listen: false).search(expression);
   }
 
-  void onRate(BuildContext context, ListItem item) {
+  void onRate(BuildContext context, ResultListDTO item) {
     RatingDialog(context).showRating(
         title: item.result.title,
         rating: item.rating,
@@ -48,8 +51,4 @@ class SearchPage extends StatelessWidget {
               .rate(item, newRating);
         });
   }
-
-/*  void onFilter(BuildContext context) {
-    FilterDialog(context).showFilter(onConfirmation: () => print("FILTER ME"));
-  }*/
 }

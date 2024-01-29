@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:meticulo/widget/buttons.dart';
+
+import 'icons.dart';
 
 class SearchAppBar extends StatelessWidget {
-  final void Function(String)? onSearch;
-  final void Function()? onFilter;
+  final String hintText = "Search for a movie...";
 
-  const SearchAppBar({super.key, this.onSearch, this.onFilter});
+  final void Function(String)? onSearch;
+
+  const SearchAppBar({super.key, this.onSearch});
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +20,16 @@ class SearchAppBar extends StatelessWidget {
                 builder: (BuildContext context, SearchController controller) {
                   return SearchBar(
                     controller: controller,
-                    hintText: "Search for a movie...",
+                    hintText: hintText,
                     onSubmitted: onSearch,
                     leading: const Padding(
                       padding: EdgeInsets.all(5),
-                      child: Icon(Icons.search),
+                      child: CustomIcon.search(),
                     ),
                   );
                 },
                 suggestionsBuilder: (_, __) => []),
           ),
-          if (onFilter != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: CustomIconButton.filter(
-                onPressed: onFilter,
-              ),
-            ),
         ],
       ),
     );

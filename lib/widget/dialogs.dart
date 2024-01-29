@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meticulo/widget/buttons.dart';
+import 'package:meticulo/widget/rating_rows.dart';
 
 abstract class CustomDialog {
   final BuildContext context;
@@ -22,14 +23,10 @@ class RatingDialog extends CustomDialog {
           return AlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (var i = 0; i < 5; i++)
-                CustomIconButton.star(
-                  selected: i < rating,
-                  onPressed: () => setState(() => rating = i + 1),
-                )
-            ])),
+                child: RatingButtonRow(
+                    rating: rating,
+                    onPressed: (newRating) =>
+                        setState(() => rating = newRating))),
             actionsAlignment: MainAxisAlignment.spaceAround,
             actions: [
               CustomIconButton.cancel(
@@ -61,43 +58,4 @@ class RatingDialog extends CustomDialog {
           rating: rating,
           onConfirmation: onConfirmation,
           onCancellation: onCancellation);
-}
-
-class FilterDialog extends CustomDialog {
-  FilterDialog(super.context);
-
-  Future<void> _showDialog(
-      {required void Function() onConfirmation, VoidCallback? onCancellation}) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(builder: (context, setState) {
-          return AlertDialog(
-            content: const SingleChildScrollView(child: Placeholder()),
-            actionsAlignment: MainAxisAlignment.spaceAround,
-            actions: [
-              CustomIconButton.cancel(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  onCancellation == null ? () => null : onCancellation();
-                },
-              ),
-              CustomIconButton.confirm(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  onConfirmation();
-                },
-              )
-            ],
-          );
-        });
-      },
-    );
-  }
-
-  Future<void> showFilter(
-          {required void Function() onConfirmation,
-          VoidCallback? onCancellation}) =>
-      _showDialog(
-          onConfirmation: onConfirmation, onCancellation: onCancellation);
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'icons.dart';
+
 class CustomIconButton extends StatelessWidget {
   final void Function()? onPressed;
   final Widget icon;
@@ -7,27 +9,15 @@ class CustomIconButton extends StatelessWidget {
   const CustomIconButton({super.key, this.onPressed, required this.icon});
 
   @override
-  Widget build(BuildContext context) {
-    return IconButton(icon: icon, onPressed: onPressed);
-  }
+  Widget build(BuildContext context) =>
+      IconButton(icon: icon, onPressed: onPressed);
 
   const CustomIconButton.cancel({super.key, this.onPressed})
-      : icon = const Icon(
-          Icons.cancel_outlined,
-          size: 40,
-        );
+      : icon = const CustomIcon.cancel();
 
   const CustomIconButton.confirm({super.key, this.onPressed})
-      : icon = const Icon(
-          Icons.check_circle_outline,
-          size: 40,
-        );
+      : icon = const CustomIcon.confirm();
 
-  CustomIconButton.star({super.key, required bool selected, this.onPressed})
-      : icon = Icon(
-          selected ? Icons.star : Icons.star_border,
-        );
-
-  const CustomIconButton.filter({super.key, this.onPressed})
-      : icon = const Icon(Icons.filter_list);
+  CustomIconButton.rating({super.key, required bool selected, this.onPressed})
+      : icon = CustomIcon.rating(selected: selected);
 }

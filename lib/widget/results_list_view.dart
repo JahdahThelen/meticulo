@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../model/result.dart';
+import 'icons.dart';
+import 'rating_rows.dart';
 
 class ResultsListView extends StatelessWidget {
-  final List<ListItem> results;
-  final void Function(ListItem) onSave;
-  final void Function(ListItem) onRate;
+  final List<ResultListDTO> results;
+  final void Function(ResultListDTO) onSave;
+  final void Function(ResultListDTO) onRate;
 
   const ResultsListView(
       {super.key,
@@ -15,32 +17,18 @@ class ResultsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (results.isEmpty) {
-      return const Center(
-          child: Text("Nothing to show.", style: TextStyle(fontSize: 20)));
-    }
-
     return ListView.separated(
       reverse: true,
       itemBuilder: (context, index) {
-        ListItem item = results[index];
+        ResultListDTO item = results[index];
         return ListTile(
           title: Text(item.result.title),
           onTap: () => onSave(item),
           onLongPress: () => onRate(item),
-          leading: Icon(
-            Icons.bookmark,
-            color: item.isSaved ? Colors.black54 : Colors.transparent,
-          ),
-          subtitle: item.rating == 0
-              ? null
-              : Row(
-                  children: [
-                    for (var i = 0; i < 5; i++)
-                      Icon(i < item.rating ? Icons.star : Icons.star_border,
-                          color: Colors.black45)
-                  ],
-                ),
+          leading: item.isSaved
+              ? const CustomIcon.saved()
+              : const CustomIcon.empty(),
+          subtitle: item.rating > 0 ? RatingIconRow(rating: item.rating) : null,
         );
       },
       separatorBuilder: (context, index) => const Divider(),
@@ -50,10 +38,11 @@ class ResultsListView extends StatelessWidget {
   }
 }
 
-class ListItem {
+class ResultListDTO {
   final Result result;
   final bool isSaved;
   final int rating;
 
-  ListItem({required this.result, required this.isSaved, required this.rating});
+  ResultListDTO(
+      {required this.result, required this.isSaved, required this.rating});
 }
