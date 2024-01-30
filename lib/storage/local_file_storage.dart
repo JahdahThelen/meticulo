@@ -18,8 +18,8 @@ class LocalFileStorage extends AbstractStorage {
     return LocalFileStorage(newDir);
   }
 
-  Future<File> get _savedResultsFile async {
-    File file = File('${_directory.path}/saved.txt');
+  Future<File> get _markedResultsFile async {
+    File file = File('${_directory.path}/marked.txt');
     if (await file.exists()) return file;
     return await file.create();
   }
@@ -31,8 +31,8 @@ class LocalFileStorage extends AbstractStorage {
   }
 
   @override
-  Future<void> updateSavedResults(List<Result> results) async {
-    final file = await _savedResultsFile;
+  Future<void> updateMarkedResults(List<Result> results) async {
+    final file = await _markedResultsFile;
     String content =
         jsonEncode(results.map((result) => result.toJson()).toList());
     file.writeAsString(content);
@@ -46,8 +46,8 @@ class LocalFileStorage extends AbstractStorage {
   }
 
   @override
-  Future<List<Result>> readSavedResults() async {
-    final file = await _savedResultsFile;
+  Future<List<Result>> readMarkedResults() async {
+    final file = await _markedResultsFile;
 
     String contents = await file.readAsString();
     final List<Result> results = [];

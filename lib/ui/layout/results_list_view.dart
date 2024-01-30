@@ -25,8 +25,8 @@ class ResultsListView extends StatelessWidget {
           title: Text(item.result.title),
           onTap: () => onSave(item),
           onLongPress: () => onRate(item),
-          leading: item.isSaved
-              ? const CustomIcon.saved()
+          leading: item.isMarked
+              ? const CustomIcon.marked()
               : const CustomIcon.empty(),
           subtitle: item.rating > 0 ? RatingIconRow(rating: item.rating) : null,
         );
@@ -40,9 +40,9 @@ class ResultsListView extends StatelessWidget {
 
 class ResultListDTO {
   final Result result;
-  final bool isSaved;
+  final bool isMarked;
   final int rating;
 
   ResultListDTO(
-      {required this.result, required this.isSaved, required this.rating});
+      {required this.result, required this.isMarked, required this.rating});
 }

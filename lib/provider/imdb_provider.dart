@@ -6,14 +6,14 @@ import '../api/api_client.dart';
 import '../model/result.dart';
 import '../ui/layout/results_list_view.dart';
 
-enum ResultsType { searched, saved, rated }
+enum ResultsType { searched, marked, rated }
 
 class ImdbProvider extends ResultProvider {
-  ResultsType _resultsType = ResultsType.saved;
+  ResultsType _resultsType = ResultsType.marked;
   final AbstractStorage? _storage;
   final ApiClient _api;
   List<Result> _searchResults = [];
-  List<Result> _savedResults = [];
+  List<Result> _markedResults = [];
   RatedResults _ratedResults = RatedResults.empty();
 
   ImdbProvider(this._storage, this._api) {
@@ -22,7 +22,7 @@ class ImdbProvider extends ResultProvider {
 
   Future<void> loadData() async {
     if (_storage == null) return;
-    _savedResults = await _storage!.readSavedResults();
+    _markedResults = await _storage!.readMarkedResults();
     _ratedResults = await _storage!.readRatedResults();
     notifyListeners();
   }
@@ -32,8 +32,8 @@ class ImdbProvider extends ResultProvider {
     switch (_resultsType) {
       case ResultsType.searched:
         return searchResults;
-      case ResultsType.saved:
-        return savedResults;
+      case ResultsType.marked:
+        return markedResults;
       case ResultsType.rated:
         return ratedResults;
     }
@@ -42,26 +42,26 @@ class ImdbProvider extends ResultProvider {
   List<ResultListDTO> get searchResults => _searchResults
       .map((result) => ResultListDTO(
           result: result,
-          isSaved: _savedResults.contains(result),
+          isMarked: _markedResults.contains(result),
           rating: _ratedResults[result] ?? 0))
       .toList(growable: false);
 
-  List<ResultListDTO> get savedResults => _savedResults
+  List<ResultListDTO> get markedResults => _markedResults
       .map((result) => ResultListDTO(
-          result: result, isSaved: true, rating: _ratedResults[result] ?? 0))
+          result: result, isMarked: true, rating: _ratedResults[result] ?? 0))
       .toList(growable: false);
 
   List<ResultListDTO> get ratedResults => _ratedResults.entries
       .map((entry) => ResultListDTO(
           result: entry.key,
-          isSaved: _savedResults.contains(entry.key),
+          isMarked: _markedResults.contains(entry.key),
           rating: entry.value))
       .toList(growable: false);
 
   @override
   Future<void> search(String expression) async {
     if (expression.isEmpty) {
-      _resultsType = ResultsType.saved;
+      _resultsType = ResultsType.marked;
       notifyListeners();
       return;
     }
@@ -74,18 +74,18 @@ class ImdbProvider extends ResultProvider {
   @override
   void save(ResultListDTO item) {
     Result result = item.result;
-    if (_savedResults.contains(result)) {
-      _savedResults.remove(result);
+    if (_markedResults.contains(result)) {
+      _markedResults.remove(result);
     } else {
-      _savedResults.add(result);
+      _markedResults.add(result);
     }
-    _saveSavedToStorage();
+    _saveMarkedToStorage();
     notifyListeners();
   }
 
-  void _saveSavedToStorage() {
+  void _saveMarkedToStorage() {
     if (_storage == null) return;
-    _storage!.updateSavedResults(_savedResults);
+    _storage!.updateMarkedResults(_markedResults);
   }
 
   @override

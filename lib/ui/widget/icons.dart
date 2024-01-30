@@ -21,7 +21,7 @@ class CustomIcon extends StatelessWidget {
       : icon =
             selected ? const Icon(Icons.star) : const Icon(Icons.star_border);
 
-  const CustomIcon.saved({super.key}) : icon = const Icon(Icons.bookmark);
+  const CustomIcon.marked({super.key}) : icon = const Icon(Icons.bookmark);
 
   const CustomIcon.search({super.key}) : icon = const Icon(Icons.search);
 }
