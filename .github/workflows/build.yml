@@ -3,8 +3,7 @@ name: Build Meticulo App
 on: workflow_dispatch
 
 env:
-  FILENAME: Meticulo V${{vars.VERSION}}
-  BUILD_DIR: .android
+  FILENAME: Meticulo V${{vars.VERSION}}.apk
 
 jobs:
   build_for_android:
@@ -22,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Build APK
-        run: |
-          flutter build apk --release
-          flutter build appbundle --release
+        run: flutter build apk --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.FILENAME}}
+          path: /build/app/outputs/flutter-apk/app-release.apk
